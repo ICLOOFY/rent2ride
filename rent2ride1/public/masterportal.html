@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Master Portal — Rent2Ride</title>
+  <meta name="description" content="Rent2Ride — Master owner sign in portal for fleet management.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Plus+Jakarta+Sans:wght@500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header class="navbar">
+    <a class="brand" href="index.html" aria-label="Rent2Ride home">
+      <div class="brand-badge">R2</div>
+      <span class="brand-text">rent<span>2</span>ride</span>
+    </a>
+    <nav class="nav-links">
+      <a href="index.html">Home</a>
+      <a href="livemap.html">Live Map</a>
+      <a href="fleet.html">Vehicle Fleet</a>
+      <a href="reviews.html">Ratings &amp; Reviews</a>
+      <a href="master.html">Master Fleet</a>
+    </nav>
+    <div class="nav-actions">
+      <span id="activeUserBadge" class="auth-pill" style="display:none;"></span>
+      <button id="userAuthBtn" class="btn-minimal" onclick="openModal('userLoginModal')">User Sign In</button>
+      <button id="masterAuthBtn" class="btn-master" onclick="openModal('masterLoginModal')">Master Portal</button>
+    </div>
+  </header>
+
+  <main>
+    <section class="section" style="min-height: 60vh; display: flex; align-items: center; justify-content: center;">
+      <div style="width: min(480px, 100%);">
+        <div class="modal-badge master-badge" style="display: inline-block;">MASTER PORTAL</div>
+        <h2 style="margin-bottom: 6px;">Master Owner Sign In</h2>
+        <p class="section-muted" style="margin-bottom: 24px;">Manage fleet vehicles, monitor rental bookings, and review rider feedback.</p>
+        <form onsubmit="handleMasterLogin(event)">
+          <label class="field-label">Master Account Email
+            <input id="masterEmailInput" type="email" value="master@rent2ride.com" required>
+          </label>
+          <label class="field-label">Master Password
+            <input id="masterPasswordInput" type="password" value="master123" required>
+          </label>
+          <button type="submit" class="btn-peach full-btn">Enter Master Dashboard</button>
+          <div class="demo-credential-box">
+            <small>Demo Account: <code>master@rent2ride.com</code> / <code>master123</code></small>
+          </div>
+        </form>
+        <div style="margin-top: 24px; text-align: center;">
+          <p class="section-muted">Looking to rent a ride? <a href="signin.html" style="color: var(--peach); font-weight: 600;">Sign in as Rider →</a></p>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+      <div class="footer-brand">
+        <div class="footer-logo">
+          <div class="brand-badge small">R2</div>
+          <span class="brand-text">rent<span>2</span>ride</span>
+        </div>
+        <p class="footer-tagline">Hyper-local two-wheeler mobility powered by trust and support of millions</p>
+      </div>
+      <div class="footer-links">
+        <a href="index.html">Home</a>
+        <a href="livemap.html">Map</a>
+        <a href="fleet.html">Fleet</a>
+        <a href="reviews.html">Ratings</a>
+        <a href="master.html">Master Portal</a>
+      </div>
+    </div>
+    <div class="footer-sub">
+      <span>© 2026 Rent2Ride. All rights reserved.</span>
+      <span class="db-indicator">● Verified Fleet &amp; SQLite Storage Active</span>
+    </div>
+  </footer>
+
+  <!-- Modals for navbar functionality -->
+  <div id="userLoginModal" class="modal">
+    <div class="modal-card">
+      <button class="modal-close" onclick="closeModal('userLoginModal')">✕</button>
+      <div class="modal-badge user-badge">USER PORTAL</div>
+      <h3>Rider Sign In</h3>
+      <p class="modal-desc">Access your rentals, booking history, and manage your vehicle ratings.</p>
+      <form onsubmit="handleUserLogin(event)">
+        <label class="field-label">Rider Email<input id="userEmailInput" type="email" value="rider@example.com" required></label>
+        <label class="field-label">Password<input id="userPasswordInput" type="password" value="rider123" required></label>
+        <button type="submit" class="btn-peach full-btn">Sign in as Rider</button>
+        <div class="demo-credential-box"><small>Demo Account: <code>rider@example.com</code> / <code>rider123</code></small></div>
+      </form>
+    </div>
+  </div>
+
+  <div id="masterLoginModal" class="modal">
+    <div class="modal-card master-modal">
+      <button class="modal-close" onclick="closeModal('masterLoginModal')">✕</button>
+      <div class="modal-badge master-badge">MASTER PORTAL</div>
+      <h3>Master Owner Sign In</h3>
+      <p class="modal-desc">Manage fleet vehicles, monitor rental bookings, and review rider feedback.</p>
+      <form onsubmit="handleMasterLogin(event)">
+        <label class="field-label">Master Account Email<input id="masterEmailInput2" type="email" value="master@rent2ride.com" required></label>
+        <label class="field-label">Master Password<input id="masterPasswordInput2" type="password" value="master123" required></label>
+        <button type="submit" class="btn-peach full-btn">Enter Master Dashboard</button>
+        <div class="demo-credential-box"><small>Demo Account: <code>master@rent2ride.com</code> / <code>master123</code></small></div>
+      </form>
+    </div>
+  </div>
+
+  <div id="masterDashboardModal" class="modal">
+    <div class="modal-card wide-modal">
+      <button class="modal-close" onclick="closeModal('masterDashboardModal')">✕</button>
+      <div class="modal-badge master-badge">MASTER FLEET DASHBOARD</div>
+      <div class="dash-header">
+        <div>
+          <h3 id="dashOwnerTitle">Master Control Center</h3>
+          <p class="modal-desc">Real-time status of your two-wheelers, reservations, and earnings.</p>
+        </div>
+        <button class="btn-sm" onclick="openModal('listModal')">+ Add Vehicle</button>
+      </div>
+      <div class="dash-metrics-grid">
+        <div class="dash-metric-card"><small>TOTAL FLEET</small><strong id="dashTotalVehicles">6</strong></div>
+        <div class="dash-metric-card"><small>CONFIRMED TRIPS</small><strong id="dashTotalBookings">0</strong></div>
+        <div class="dash-metric-card"><small>EST. MONTHLY REVENUE</small><strong id="dashTotalRevenue">₹14,800</strong></div>
+        <div class="dash-metric-card"><small>AVERAGE FLEET RATING</small><strong id="dashFleetRating">★ 4.9</strong></div>
+      </div>
+      <div class="dash-section-title">Your Active Vehicles</div>
+      <div id="dashVehiclesList" class="dash-list"></div>
+      <div class="dash-section-title" style="margin-top: 20px;">Recent Rental Transactions</div>
+      <div id="dashBookingsList" class="dash-list"></div>
+    </div>
+  </div>
+
+  <div id="bookingModal" class="modal">
+    <div class="modal-card">
+      <button class="modal-close" onclick="closeModal('bookingModal')">✕</button>
+      <div class="modal-badge user-badge">SECURE CHECKOUT</div>
+      <h3 id="bookingVehicleTitle">Book Vehicle</h3>
+      <p class="modal-desc">Instant reservation with SQLite persistence.</p>
+      <div id="bookingPhotoPreview" class="booking-photo-box"></div>
+      <div class="rate-preview-row"><span>Daily Rental Rate</span><strong id="bookingDailyRate">₹0/day</strong></div>
+      <label class="field-label">Rider Full Name<input id="bookingNameInput" type="text" value="Demo Rider" required></label>
+      <label class="field-label">Rider Contact Email<input id="bookingEmailInput" type="email" value="rider@example.com" required></label>
+      <label class="field-label">Rental Duration (Days)<input id="bookingDaysInput" type="number" min="1" max="30" value="1" oninput="updateBookingTotal()"></label>
+      <div class="total-calc-row"><span>Estimated Total</span><strong id="bookingTotalCalc">₹0</strong></div>
+      <button id="confirmBookingBtn" class="btn-peach full-btn" onclick="executeBooking()">Confirm Reservation</button>
+    </div>
+  </div>
+
+  <div id="reviewModal" class="modal">
+    <div class="modal-card">
+      <button class="modal-close" onclick="closeModal('reviewModal')">✕</button>
+      <div class="modal-badge user-badge">RATE &amp; REVIEW</div>
+      <h3 id="reviewModalTitle">Rate Your Ride</h3>
+      <p class="modal-desc">You can submit or change your rating and feedback anytime.</p>
+      <label class="field-label">Select Vehicle<select id="reviewRideSelect" onchange="loadExistingRatingForRide()"></select></label>
+      <div class="star-picker-wrap">
+        <span class="picker-label">Rating:</span>
+        <div class="star-rating-picker" id="starRatingPicker">
+          <span class="star-pick active" data-rating="1" onclick="setStarRating(1)">★</span>
+          <span class="star-pick active" data-rating="2" onclick="setStarRating(2)">★</span>
+          <span class="star-pick active" data-rating="3" onclick="setStarRating(3)">★</span>
+          <span class="star-pick active" data-rating="4" onclick="setStarRating(4)">★</span>
+          <span class="star-pick active" data-rating="5" onclick="setStarRating(5)">★</span>
+        </div>
+        <span id="selectedRatingText" class="rating-num-label">5.0 / 5.0</span>
+      </div>
+      <label class="field-label">Feedback Category
+        <select id="reviewTagSelect">
+          <option value="Smooth Ride">Smooth Ride &amp; Great Mileage</option>
+          <option value="Clean &amp; Maintained">Clean &amp; Well Maintained</option>
+          <option value="Prompt Master">Prompt &amp; Courteous Master</option>
+          <option value="Easy Commute">Easy City Commute</option>
+          <option value="Value for Money">Value for Money</option>
+        </select>
+      </label>
+      <label class="field-label">Your Review &amp; Experience<textarea id="reviewCommentInput" rows="3" placeholder="Share how the vehicle performed, pickup ease, and overall experience..."></textarea></label>
+      <button id="submitReviewBtn" class="btn-peach full-btn" onclick="submitReview()">Save Rating &amp; Feedback</button>
+    </div>
+  </div>
+
+  <div id="listModal" class="modal">
+    <div class="modal-card">
+      <button class="modal-close" onclick="closeModal('listModal')">✕</button>
+      <div class="modal-badge master-badge">MASTER FLEET ADDITION</div>
+      <h3>List a Two-Wheeler</h3>
+      <p class="modal-desc">Add a new motorcycle or bicycle to the verified inventory.</p>
+      <label class="field-label">Vehicle Name &amp; Model<input id="listName" placeholder="e.g. Yamaha FZ-S / Montra Helicon" required></label>
+      <label class="field-label">Vehicle Type<select id="listType"><option value="motorcycle">Motorcycle / Scooter</option><option value="bicycle">Bicycle</option></select></label>
+      <label class="field-label">Daily Rental Rate (₹)<input id="listPrice" type="number" min="50" placeholder="399" required></label>
+      <label class="field-label">Pickup Area<input id="listArea" placeholder="e.g. Knowledge Park, Pari Chowk" required></label>
+      <label class="field-label">Specifications (Engine / Mileage)<input id="listSpecs" placeholder="e.g. 150cc • 45 km/l • Disc Brakes"></label>
+      <label class="field-label">Real Photo URL (Optional)<input id="listImageUrl" placeholder="https://images.unsplash.com/..."></label>
+      <button class="btn-peach full-btn" onclick="submitNewListing()">Publish to Fleet</button>
+    </div>
+  </div>
+
+  <div id="toast" class="toast"></div>
+  <script src="script.js"></script>
+</body>
+</html>
+

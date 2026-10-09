@@ -1,0 +1,493 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Rent2Ride — Premium Two-Wheeler Mobility</title>
+  <meta name="description" content="Rent2Ride — Hyper-local premium peer-to-peer motorcycle and bicycle rental platform.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Plus+Jakarta+Sans:wght@500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <!-- Ultra-Premium Navbar -->
+  <header class="navbar">
+    <a class="brand" href="#home" aria-label="Rent2Ride home">
+      <div class="brand-badge">R2</div>
+      <span class="brand-text">rent<span>2</span>ride</span>
+    </a>
+    <nav class="nav-links">
+      <a href="#home">Home</a>
+      <a href="#mapSection">Live Map</a>
+      <a href="#rides">Vehicle Fleet</a>
+      <a href="#reviews">Ratings & Reviews</a>
+      <a href="#master">Master Fleet</a>
+    </nav>
+    <div class="nav-actions">
+      <span id="activeUserBadge" class="auth-pill" style="display:none;"></span>
+      <button id="userAuthBtn" class="btn-minimal" onclick="openModal('userLoginModal')">User Sign In</button>
+      <button id="masterAuthBtn" class="btn-master" onclick="openModal('masterLoginModal')">Master Portal</button>
+    </div>
+  </header>
+
+  <main>
+    <!-- Hero Section -->
+    <section id="home" class="hero">
+      <div class="hero-left">
+        <div class="badge-pill">
+          <span class="pulse-dot"></span>
+          <span>Hyper-local mobility · Within 5 km radius</span>
+        </div>
+        <h1>Two-wheeler mobility,<br><span class="highlight">elevated to perfection.</span></h1>
+        <p class="hero-desc">
+          Rent premium motorcycles and performance bicycles direct from verified local owners. Transparent daily rates, instant key handover, and community-verified ratings.
+        </p>
+        <div class="hero-cta-group">
+          <a class="btn-peach" href="#rides">Explore Verified Fleet <span>→</span></a>
+          <button class="btn-ghost" onclick="handleMasterAction()">Master Dashboard</button>
+        </div>
+        <div class="stat-strip">
+          <div class="stat-item">
+            <strong>5 km</strong>
+            <span>Discovery Radius</span>
+          </div>
+          <div class="stat-divider"></div>
+          <div class="stat-item">
+            <strong>4.9 ★</strong>
+            <span>Average Rider Rating</span>
+          </div>
+          <div class="stat-divider"></div>
+          <div class="stat-item">
+            <strong>100%</strong>
+            <span>Verified Fleet</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Real Google Maps Interactive View -->
+      <div class="hero-right" id="mapSection">
+        <div class="google-map-container">
+          <div class="map-topbar">
+            <div class="map-status">
+              <span class="map-live-dot"></span>
+              <strong>Google Maps Live Discovery</strong>
+            </div>
+            <div class="map-zone-pill">Greater Noida · 5.0 km Hub</div>
+          </div>
+
+          <!-- Embedded Interactive Google Map -->
+          <div class="map-frame-wrap">
+            <iframe 
+              id="gmapFrame"
+              title="Google Maps Two-Wheeler Locations"
+              class="google-map-iframe"
+              src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d14030.82580792019!2d77.49395233075253!3d28.468770287532724!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x390cc1e05d045d95%3A0xe54df656a88b8577!2sKnowledge%20Park%20III%2C%20Greater%20Noida%2C%20Uttar%20Pradesh!5e0!3m2!1sen!2sin!4v1710633450000!5m2!1sen!2sin" 
+              allowfullscreen="" 
+              loading="lazy" 
+              referrerpolicy="no-referrer-when-downgrade">
+            </iframe>
+
+            <!-- Overlay Pins with Real Vehicles & Prices -->
+            <div class="map-markers-overlay">
+              <div class="map-custom-marker marker-1" onclick="jumpToRide(1)" title="Honda Activa 6G">
+                <span class="marker-bubble">🛵 Activa 6G · ₹399</span>
+              </div>
+              <div class="map-custom-marker marker-2" onclick="jumpToRide(2)" title="Royal Enfield Classic 350">
+                <span class="marker-bubble">🏍️ Royal Enfield · ₹699</span>
+              </div>
+              <div class="map-custom-marker marker-3" onclick="jumpToRide(3)" title="Trek Marlin Bicycle">
+                <span class="marker-bubble">🚲 Trek Marlin · ₹179</span>
+              </div>
+              <div class="map-custom-marker marker-4" onclick="jumpToRide(4)" title="Hero Splendor">
+                <span class="marker-bubble">🏍️ Splendor+ · ₹349</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="map-bottombar">
+            <div>
+              <small>ACTIVE VEHICLES NEARBY</small>
+              <strong id="mapFleetCount">6 Two-Wheelers in Radius</strong>
+            </div>
+            <button class="btn-map-action" onclick="document.getElementById('rides').scrollIntoView({behavior:'smooth'})">View All Rides ↓</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Trust Strip -->
+    <div class="trust-bar">
+      <span>PREMIUM FLEET</span>
+      <span class="sep">•</span>
+      <span>REAL VEHICLE IMAGERY</span>
+      <span class="sep">•</span>
+      <span>GOOGLE MAPS API INTEGRATION</span>
+      <span class="sep">•</span>
+      <span>EDITABLE STAR RATINGS</span>
+      <span class="sep">•</span>
+      <span>MASTER & USER PORTALS</span>
+    </div>
+
+    <!-- Rides Fleet Catalog Section -->
+    <section id="rides" class="section">
+      <div class="section-top">
+        <div>
+          <div class="sub-label">Verified Vehicle Inventory</div>
+          <h2>Select your ride.</h2>
+          <p class="section-muted">Curated motorcycles, scooters, and performance bicycles with authentic photography and live specs.</p>
+        </div>
+        <div class="filter-pills">
+          <button class="filter-pill active" data-type="all" onclick="setFilter('all')">All</button>
+          <button class="filter-pill" data-type="motorcycle" onclick="setFilter('motorcycle')">Motorcycles & Scooters</button>
+          <button class="filter-pill" data-type="bicycle" onclick="setFilter('bicycle')">Bicycles</button>
+          <button class="filter-pill" data-type="topRated" onclick="setFilter('topRated')">★ Top Rated</button>
+        </div>
+      </div>
+
+      <div class="search-panel">
+        <div class="search-input-wrap">
+          <span class="search-icon">⌕</span>
+          <input id="searchInput" type="text" placeholder="Search vehicle name, model, area or displacement..." oninput="handleSearch()">
+        </div>
+        <div class="search-controls">
+          <select id="sortSelect" onchange="handleSearch()">
+            <option value="distance">Nearest to me</option>
+            <option value="rating">Highest rated</option>
+            <option value="priceLow">Price: Low to high</option>
+            <option value="priceHigh">Price: High to low</option>
+          </select>
+          <button class="btn-icon" title="Refresh from database" onclick="fetchRides()">↻</button>
+        </div>
+      </div>
+
+      <!-- Real Vehicle Cards Grid -->
+      <div id="rideGrid" class="cards-grid">
+        <div class="loading-card">Loading fleet catalog...</div>
+      </div>
+    </section>
+
+    <!-- Ratings & Community Reviews Section -->
+    <section id="reviews" class="section reviews-section">
+      <div class="reviews-header-block">
+        <div>
+          <div class="sub-label">User Experience & Transparency</div>
+          <h2>Ratings & Feedback</h2>
+          <p class="section-muted">Read authentic rider feedback or change and update your ratings anytime.</p>
+        </div>
+        <div class="reviews-cta">
+          <button class="btn-peach" onclick="openReviewModal(null)">Write or Change Review <span>★</span></button>
+        </div>
+      </div>
+
+      <div class="reviews-overview-grid">
+        <div class="rating-summary-card">
+          <div class="score-large" id="avgRatingScore">4.9</div>
+          <div class="stars-gold" id="avgRatingStars">★★★★★</div>
+          <div class="score-caption">Verified across 140+ completed trips</div>
+          <div class="rating-tags-list">
+            <span class="review-tag">✓ Clean & Well Maintained</span>
+            <span class="review-tag">✓ Prompt Master Handover</span>
+            <span class="review-tag">✓ Smooth Engine & Gears</span>
+            <span class="review-tag">✓ Dynamic Rating Updates</span>
+          </div>
+        </div>
+
+        <div class="reviews-feed-column">
+          <div class="feed-header">
+            <h3>Recent Community Reviews</h3>
+            <span id="reviewsCountBadge" class="feed-counter">0 reviews</span>
+          </div>
+          <div id="reviewsFeed" class="reviews-feed">
+            <div class="loading-card">Loading reviews...</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Workflow Section -->
+    <section id="how" class="section how-section">
+      <div class="section-top center">
+        <div class="sub-label">Seamless Mobility</div>
+        <h2>From search to ride in four steps.</h2>
+      </div>
+      <div class="workflow-grid">
+        <div class="wf-card">
+          <div class="wf-num">01</div>
+          <h3>Discover</h3>
+          <p>Locate verified two-wheelers on the interactive Google Map within 5 km.</p>
+        </div>
+        <div class="wf-card">
+          <div class="wf-num">02</div>
+          <h3>Select</h3>
+          <p>Examine real photos, technical specifications, and community ratings.</p>
+        </div>
+        <div class="wf-card">
+          <div class="wf-num">03</div>
+          <h3>Reserve</h3>
+          <p>Confirm booking duration with transparent pricing and SQLite record keeping.</p>
+        </div>
+        <div class="wf-card">
+          <div class="wf-num">04</div>
+          <h3>Rate & Edit</h3>
+          <p>Share your review and change or update your rating anytime for transparency.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Master Owner Section -->
+    <section id="master" class="section master-section">
+      <div class="master-banner">
+        <div class="master-copy">
+          <div class="badge-pill master-pill">
+            <span>Fleet Owners & Private Hosts</span>
+          </div>
+          <h2>Become a Master.<br>Monetize idle two-wheelers.</h2>
+          <p class="section-muted">
+            List your motorcycles or bicycles on Rent2Ride. Set daily rates, manage availability, monitor rider feedback, and earn with comprehensive community trust.
+          </p>
+          <ul class="master-points">
+            <li><span>✓</span> Master Fleet Dashboard with live revenue stats</li>
+            <li><span>✓</span> Verified rider KYC and secure reservation logs</li>
+            <li><span>✓</span> Real-time rating insights and customer sentiment</li>
+          </ul>
+          <div class="master-actions">
+            <button class="btn-peach" onclick="handleMasterAction()">Open Master Dashboard →</button>
+            <button class="btn-ghost" onclick="openModal('listModal')">+ Add New Vehicle</button>
+          </div>
+        </div>
+        <div class="master-card-preview">
+          <div class="master-stat-box">
+            <small>ESTIMATED MONTHLY REVENUE</small>
+            <strong class="revenue-val">₹14,800</strong>
+            <span class="positive-indicator">↑ Estimated from 2 active vehicles</span>
+          </div>
+          <div class="preview-mini-fleet">
+            <div class="fleet-row"><span>🛵 Honda Activa 6G</span><span class="status-live">● Available</span></div>
+            <div class="fleet-row"><span>🏍️ Royal Enfield 350</span><span class="status-live">● Available</span></div>
+            <div class="fleet-row"><span>🚲 Trek Marlin Bike</span><span class="status-live">● Available</span></div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Clean Footer (Updated copy without unwanted brackets/attributions) -->
+  <footer class="footer">
+    <div class="footer-inner">
+      <div class="footer-brand">
+        <div class="footer-logo">
+          <div class="brand-badge small">R2</div>
+          <span class="brand-text">rent<span>2</span>ride</span>
+        </div>
+        <p class="footer-tagline">Hyper-local two-wheeler mobility powered by trust and support of millions</p>
+      </div>
+      <div class="footer-links">
+        <a href="#home">Home</a>
+        <a href="#mapSection">Map</a>
+        <a href="#rides">Fleet</a>
+        <a href="#reviews">Ratings</a>
+        <a href="#master">Master Portal</a>
+      </div>
+    </div>
+    <div class="footer-sub">
+      <span>© 2026 Rent2Ride. All rights reserved.</span>
+      <span class="db-indicator">● Verified Fleet & SQLite Storage Active</span>
+    </div>
+  </footer>
+
+  <!-- 1. USER LOGIN MODAL -->
+  <div id="userLoginModal" class="modal">
+    <div class="modal-card">
+      <button class="modal-close" onclick="closeModal('userLoginModal')">✕</button>
+      <div class="modal-badge user-badge">USER PORTAL</div>
+      <h3>Rider Sign In</h3>
+      <p class="modal-desc">Access your rentals, booking history, and manage your vehicle ratings.</p>
+      <form onsubmit="handleUserLogin(event)">
+        <label class="field-label">Rider Email
+          <input id="userEmailInput" type="email" value="rider@example.com" required>
+        </label>
+        <label class="field-label">Password
+          <input id="userPasswordInput" type="password" value="rider123" required>
+        </label>
+        <button type="submit" class="btn-peach full-btn">Sign in as Rider</button>
+        <div class="demo-credential-box">
+          <small>Demo Account: <code>rider@example.com</code> / <code>rider123</code></small>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- 2. MASTER LOGIN MODAL -->
+  <div id="masterLoginModal" class="modal">
+    <div class="modal-card master-modal">
+      <button class="modal-close" onclick="closeModal('masterLoginModal')">✕</button>
+      <div class="modal-badge master-badge">MASTER PORTAL</div>
+      <h3>Master Owner Sign In</h3>
+      <p class="modal-desc">Manage fleet vehicles, monitor rental bookings, and review rider feedback.</p>
+      <form onsubmit="handleMasterLogin(event)">
+        <label class="field-label">Master Account Email
+          <input id="masterEmailInput" type="email" value="master@rent2ride.com" required>
+        </label>
+        <label class="field-label">Master Password
+          <input id="masterPasswordInput" type="password" value="master123" required>
+        </label>
+        <button type="submit" class="btn-peach full-btn">Enter Master Dashboard</button>
+        <div class="demo-credential-box">
+          <small>Demo Account: <code>master@rent2ride.com</code> / <code>master123</code></small>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- 3. MASTER DASHBOARD MODAL -->
+  <div id="masterDashboardModal" class="modal">
+    <div class="modal-card wide-modal">
+      <button class="modal-close" onclick="closeModal('masterDashboardModal')">✕</button>
+      <div class="modal-badge master-badge">MASTER FLEET DASHBOARD</div>
+      <div class="dash-header">
+        <div>
+          <h3 id="dashOwnerTitle">Master Control Center</h3>
+          <p class="modal-desc">Real-time status of your two-wheelers, reservations, and earnings.</p>
+        </div>
+        <button class="btn-sm" onclick="openModal('listModal')">+ Add Vehicle</button>
+      </div>
+
+      <div class="dash-metrics-grid">
+        <div class="dash-metric-card">
+          <small>TOTAL FLEET</small>
+          <strong id="dashTotalVehicles">6</strong>
+        </div>
+        <div class="dash-metric-card">
+          <small>CONFIRMED TRIPS</small>
+          <strong id="dashTotalBookings">0</strong>
+        </div>
+        <div class="dash-metric-card">
+          <small>EST. MONTHLY REVENUE</small>
+          <strong id="dashTotalRevenue">₹14,800</strong>
+        </div>
+        <div class="dash-metric-card">
+          <small>AVERAGE FLEET RATING</small>
+          <strong id="dashFleetRating">★ 4.9</strong>
+        </div>
+      </div>
+
+      <div class="dash-section-title">Your Active Vehicles</div>
+      <div id="dashVehiclesList" class="dash-list"></div>
+
+      <div class="dash-section-title" style="margin-top: 20px;">Recent Rental Transactions</div>
+      <div id="dashBookingsList" class="dash-list"></div>
+    </div>
+  </div>
+
+  <!-- 4. BOOKING MODAL -->
+  <div id="bookingModal" class="modal">
+    <div class="modal-card">
+      <button class="modal-close" onclick="closeModal('bookingModal')">✕</button>
+      <div class="modal-badge user-badge">SECURE CHECKOUT</div>
+      <h3 id="bookingVehicleTitle">Book Vehicle</h3>
+      <p class="modal-desc">Instant reservation with SQLite persistence.</p>
+      
+      <div id="bookingPhotoPreview" class="booking-photo-box"></div>
+
+      <div class="rate-preview-row">
+        <span>Daily Rental Rate</span>
+        <strong id="bookingDailyRate">₹0/day</strong>
+      </div>
+      <label class="field-label">Rider Full Name
+        <input id="bookingNameInput" type="text" value="Demo Rider" required>
+      </label>
+      <label class="field-label">Rider Contact Email
+        <input id="bookingEmailInput" type="email" value="rider@example.com" required>
+      </label>
+      <label class="field-label">Rental Duration (Days)
+        <input id="bookingDaysInput" type="number" min="1" max="30" value="1" oninput="updateBookingTotal()">
+      </label>
+      <div class="total-calc-row">
+        <span>Estimated Total</span>
+        <strong id="bookingTotalCalc">₹0</strong>
+      </div>
+      <button id="confirmBookingBtn" class="btn-peach full-btn" onclick="executeBooking()">Confirm Reservation</button>
+    </div>
+  </div>
+
+  <!-- 5. RATING & FEEDBACK MODAL (With Change/Update Rating Capability) -->
+  <div id="reviewModal" class="modal">
+    <div class="modal-card">
+      <button class="modal-close" onclick="closeModal('reviewModal')">✕</button>
+      <div class="modal-badge user-badge">RATE & REVIEW</div>
+      <h3 id="reviewModalTitle">Rate Your Ride</h3>
+      <p class="modal-desc">You can submit or change your rating and feedback anytime.</p>
+
+      <label class="field-label">Select Vehicle
+        <select id="reviewRideSelect" onchange="loadExistingRatingForRide()"></select>
+      </label>
+
+      <div class="star-picker-wrap">
+        <span class="picker-label">Rating:</span>
+        <div class="star-rating-picker" id="starRatingPicker">
+          <span class="star-pick active" data-rating="1" onclick="setStarRating(1)">★</span>
+          <span class="star-pick active" data-rating="2" onclick="setStarRating(2)">★</span>
+          <span class="star-pick active" data-rating="3" onclick="setStarRating(3)">★</span>
+          <span class="star-pick active" data-rating="4" onclick="setStarRating(4)">★</span>
+          <span class="star-pick active" data-rating="5" onclick="setStarRating(5)">★</span>
+        </div>
+        <span id="selectedRatingText" class="rating-num-label">5.0 / 5.0</span>
+      </div>
+
+      <label class="field-label">Feedback Category
+        <select id="reviewTagSelect">
+          <option value="Smooth Ride">Smooth Ride & Great Mileage</option>
+          <option value="Clean & Maintained">Clean & Well Maintained</option>
+          <option value="Prompt Master">Prompt & Courteous Master</option>
+          <option value="Easy Commute">Easy City Commute</option>
+          <option value="Value for Money">Value for Money</option>
+        </select>
+      </label>
+
+      <label class="field-label">Your Review & Experience
+        <textarea id="reviewCommentInput" rows="3" placeholder="Share how the vehicle performed, pickup ease, and overall experience..."></textarea>
+      </label>
+
+      <button id="submitReviewBtn" class="btn-peach full-btn" onclick="submitReview()">Save Rating & Feedback</button>
+    </div>
+  </div>
+
+  <!-- 6. OWNER VEHICLE LISTING MODAL -->
+  <div id="listModal" class="modal">
+    <div class="modal-card">
+      <button class="modal-close" onclick="closeModal('listModal')">✕</button>
+      <div class="modal-badge master-badge">MASTER FLEET ADDITION</div>
+      <h3>List a Two-Wheeler</h3>
+      <p class="modal-desc">Add a new motorcycle or bicycle to the verified inventory.</p>
+      <label class="field-label">Vehicle Name & Model
+        <input id="listName" placeholder="e.g. Yamaha FZ-S / Montra Helicon" required>
+      </label>
+      <label class="field-label">Vehicle Type
+        <select id="listType">
+          <option value="motorcycle">Motorcycle / Scooter</option>
+          <option value="bicycle">Bicycle</option>
+        </select>
+      </label>
+      <label class="field-label">Daily Rental Rate (₹)
+        <input id="listPrice" type="number" min="50" placeholder="399" required>
+      </label>
+      <label class="field-label">Pickup Area
+        <input id="listArea" placeholder="e.g. Knowledge Park, Pari Chowk" required>
+      </label>
+      <label class="field-label">Specifications (Engine / Mileage)
+        <input id="listSpecs" placeholder="e.g. 150cc • 45 km/l • Disc Brakes">
+      </label>
+      <label class="field-label">Real Photo URL (Optional)
+        <input id="listImageUrl" placeholder="https://images.unsplash.com/...">
+      </label>
+      <button class="btn-peach full-btn" onclick="submitNewListing()">Publish to Fleet</button>
+    </div>
+  </div>
+
+  <!-- Toast Notification -->
+  <div id="toast" class="toast"></div>
+
+  <script src="script.js"></script>
+</body>
+</html>

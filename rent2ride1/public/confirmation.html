@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Booking Confirmation — Rent2Ride</title>
+  <meta name="description" content="Rent2Ride — Your vehicle booking is confirmed.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Plus+Jakarta+Sans:wght@500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+  <style>
+    .confirmation-container {
+      max-width: 600px;
+      margin: 80px auto;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 24px;
+      padding: 40px;
+      text-align: center;
+      box-shadow: 0 20px 40px rgba(0,0,0,0.4);
+    }
+    .success-icon {
+      font-size: 64px;
+      color: var(--green);
+      margin-bottom: 20px;
+    }
+    .confirmation-container h1 {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-size: 2rem;
+      margin-bottom: 12px;
+      color: var(--text);
+    }
+    .confirmation-container p {
+      color: var(--text-muted);
+      margin-bottom: 30px;
+      line-height: 1.6;
+    }
+    .booking-details {
+      background: rgba(255,255,255,0.03);
+      border-radius: 16px;
+      padding: 24px;
+      margin-bottom: 30px;
+      text-align: left;
+    }
+    .detail-row {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 12px;
+      border-bottom: 1px solid rgba(255,255,255,0.05);
+      padding-bottom: 12px;
+      align-items: center;
+    }
+    .detail-row:last-child {
+      border-bottom: none;
+      margin-bottom: 0;
+      padding-bottom: 0;
+    }
+    .detail-label {
+      color: var(--text-muted);
+      font-size: 0.95rem;
+    }
+    .detail-value {
+      font-weight: 600;
+      color: var(--text);
+      text-align: right;
+    }
+    .master-badge {
+      display: inline-block;
+      padding: 2px 8px;
+      background: rgba(255, 126, 103, 0.1);
+      color: var(--peach);
+      border-radius: 12px;
+      font-size: 0.75rem;
+      margin-left: 8px;
+      vertical-align: middle;
+    }
+  </style>
+</head>
+<body>
+  <header class="navbar">
+    <a class="brand" href="index.html" aria-label="Rent2Ride home">
+      <div class="brand-badge">R2</div>
+      <span class="brand-text">rent<span>2</span>ride</span>
+    </a>
+    <nav class="nav-links">
+      <a href="index.html">Home</a>
+      <a href="livemap.html">Live Map</a>
+      <a href="fleet.html">Vehicle Fleet</a>
+      <a href="reviews.html">Ratings &amp; Reviews</a>
+      <a href="master.html">Master Fleet</a>
+    </nav>
+    <div class="nav-actions">
+      <span id="activeUserBadge" class="auth-pill" style="display:none;"></span>
+      <button id="userAuthBtn" class="btn-minimal" onclick="openModal('userLoginModal')">User Sign In</button>
+      <button id="masterAuthBtn" class="btn-master" onclick="openModal('masterLoginModal')">Master Portal</button>
+    </div>
+  </header>
+
+  <main>
+    <section class="section">
+      <div class="confirmation-container">
+        <div class="success-icon">✓</div>
+        <h1>Booking Confirmed!</h1>
+        <p>Your two-wheeler has been successfully reserved. Please contact the Fleet Master below to arrange the key handover.</p>
+        
+        <div class="booking-details" id="bookingDetailsPanel">
+          <div class="detail-row">
+            <span class="detail-label">Status</span>
+            <span class="detail-value" style="color: var(--green);">Confirmed &amp; Secured</span>
+          </div>
+          <div class="detail-row">
+            <span class="detail-label">Model Name</span>
+            <span class="detail-value" id="confModel">Loading...</span>
+          </div>
+          <div class="detail-row">
+            <span class="detail-label">Vehicle Number</span>
+            <span class="detail-value" id="confReg">UP 16 XX 0000</span>
+          </div>
+          <div class="detail-row">
+            <span class="detail-label">Fleet Master</span>
+            <span class="detail-value">
+              <span id="confMaster">Verified Owner</span>
+              <span class="master-badge">Verified</span>
+            </span>
+          </div>
+          <div class="detail-row">
+            <span class="detail-label">Contact Number</span>
+            <span class="detail-value" id="confContact">+91 0000000000</span>
+          </div>
+          <div class="detail-row">
+            <span class="detail-label">Pickup Address</span>
+            <span class="detail-value" id="confAddress">Greater Noida</span>
+          </div>
+        </div>
+
+        <button class="btn-peach full-btn" onclick="window.location.href='fleet.html'">Explore More Rides</button>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer" style="margin-top:auto;">
+    <div class="footer-inner">
+      <div class="footer-brand">
+        <div class="footer-logo">
+          <div class="brand-badge small">R2</div>
+          <span class="brand-text">rent<span>2</span>ride</span>
+        </div>
+        <p class="footer-tagline">Hyper-local two-wheeler mobility powered by trust and support of millions</p>
+      </div>
+      <div class="footer-links">
+        <a href="index.html">Home</a>
+        <a href="livemap.html">Map</a>
+        <a href="fleet.html">Fleet</a>
+        <a href="reviews.html">Ratings</a>
+        <a href="master.html">Master Portal</a>
+      </div>
+    </div>
+    <div class="footer-sub">
+      <span>© 2026 Rent2Ride. All rights reserved.</span>
+      <span class="db-indicator">● Verified Fleet &amp; SQLite Storage Active</span>
+    </div>
+  </footer>
+
+  <script src="script.js"></script>
+  <script>
+    // Populate dynamic confirmation details
+    document.addEventListener('DOMContentLoaded', () => {
+      const rideData = JSON.parse(sessionStorage.getItem('last_booked_ride') || 'null');
+      
+      if (rideData) {
+        // Model Name
+        document.getElementById('confModel').textContent = rideData.name;
+        
+        // Address
+        document.getElementById('confAddress').textContent = (rideData.area || "Local Hub") + ', Greater Noida';
+        
+        // Deterministic mock data generation based on ride ID so it's consistent for the same vehicle
+        const mockNames = ["Rajesh Kumar", "Amit Singh", "Suresh Sharma", "Vikram Malhotra", "Pooja Gupta", "Rahul Verma"];
+        const rideId = parseInt(rideData.id, 10) || 1;
+        
+        // Fleet Master Name
+        const masterName = mockNames[rideId % mockNames.length];
+        document.getElementById('confMaster').textContent = masterName;
+        
+        // Vehicle Registration Number (e.g. UP 16 AB 1234)
+        const char1 = String.fromCharCode(65 + (rideId % 26));
+        const char2 = String.fromCharCode(65 + ((rideId + 5) % 26));
+        const numPart = 1000 + ((rideId * 123) % 9000);
+        document.getElementById('confReg').textContent = `UP 16 ${char1}${char2} ${numPart}`;
+        
+        // Contact Number
+        const phone = 800000000 + ((rideId * 1234567) % 199999999);
+        document.getElementById('confContact').textContent = `+91 9${phone}`;
+      } else {
+        document.getElementById('confModel').textContent = "Vehicle Booked";
+      }
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,25 @@
+version: '3.8'
+
+services:
+  rent2ride:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: rent2ride-backend
+    restart: unless-stopped
+    ports:
+      - "3000:3000"
+    environment:
+      - PORT=3000
+      - NODE_ENV=production
+      - DB_PATH=/app/data/rent2ride.db
+      - JWT_SECRET=rent2ride_docker_secret_key_2026
+    volumes:
+      # Persistent SQLite storage mounted from host ./data to container /app/data
+      - ./data:/app/data
+    healthcheck:
+      test: ["CMD", "wget", "--no-verbose", "--tries=1", "--spider", "http://localhost:3000/api/health"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 5s
